@@ -30,8 +30,13 @@ public class Rato {
 
     public void novaPosicao(){
         Random random = new Random();
-        int x = Math.abs(random.nextInt(Gdx.graphics.getWidth()) - 10);
-        int y = Math.abs(random.nextInt(Gdx.graphics.getHeight()) - 10);
+        int x = 0;
+        int y = 0;
+
+        do{
+            x = Math.abs(random.nextInt(Gdx.graphics.getWidth()));
+            y = Math.abs(random.nextInt(Gdx.graphics.getHeight()));
+        }while ((x < 10 && x > Gdx.graphics.getWidth() - 20) && (y < 10 && y > Gdx.graphics.getHeight() - 20));
 
         spriteRato.setPosition(x, y);
         isPosicaoInicial = false;
