@@ -9,7 +9,8 @@ import com.mygdx.game.entities.Grama;
 import com.mygdx.game.entities.Snake;
 
 public class SnakeGame extends ApplicationAdapter {
-	SpriteBatch batch;
+
+	private SpriteBatch batch;
 	private Grama grama;
 	private Snake snake;
 	private Rato comida;
@@ -28,6 +29,7 @@ public class SnakeGame extends ApplicationAdapter {
 	public void render () {
 		ScreenUtils.clear(0, 0, 0, 0);
 		batch.begin();
+
 
 		grama.init();
 		snake.desenhaCorpo();

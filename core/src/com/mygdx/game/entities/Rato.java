@@ -36,7 +36,7 @@ public class Rato {
         do{
             x = Math.abs(random.nextInt(Gdx.graphics.getWidth()));
             y = Math.abs(random.nextInt(Gdx.graphics.getHeight()));
-        }while ((x < 10 && x > Gdx.graphics.getWidth() - 20) && (y < 10 && y > Gdx.graphics.getHeight() - 20));
+        } while ((x < 10 && x > Gdx.graphics.getWidth() - 20) && (y < 10 && y > Gdx.graphics.getHeight() - 20));
 
         spriteRato.setPosition(x, y);
         isPosicaoInicial = false;
