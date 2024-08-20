@@ -30,14 +30,13 @@ public class SnakeGame extends ApplicationAdapter {
 		ScreenUtils.clear(0, 0, 0, 0);
 		batch.begin();
 
-
 		grama.init();
 		snake.desenhaCorpo();
 		snake.desenhaCabeca();
 		comida.desenhaComida();
 		snake.move();
 		colisao.checaColisaoComRato();
-
+		colisao.checaColisaoComParede();
 
 		batch.end();
 	}

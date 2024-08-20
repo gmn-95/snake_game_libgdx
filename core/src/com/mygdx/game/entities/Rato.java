@@ -32,11 +32,12 @@ public class Rato {
         Random random = new Random();
         int x = 0;
         int y = 0;
+        int raio = 8;
 
         do{
-            x = Math.abs(random.nextInt(Gdx.graphics.getWidth()));
-            y = Math.abs(random.nextInt(Gdx.graphics.getHeight()));
-        } while ((x < 10 && x > Gdx.graphics.getWidth() - 20) && (y < 10 && y > Gdx.graphics.getHeight() - 20));
+            x = Math.abs(random.nextInt(Gdx.graphics.getWidth() - (raio * 2)));
+            y = Math.abs(random.nextInt(Gdx.graphics.getHeight() - (raio * 2)));
+        } while ((x <= 10 || x >= Gdx.graphics.getWidth() - 10) || (y <= 10 || y >= Gdx.graphics.getHeight() - 10));
 
         spriteRato.setPosition(x, y);
         isPosicaoInicial = false;
