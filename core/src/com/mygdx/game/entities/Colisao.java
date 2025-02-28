@@ -7,6 +7,7 @@ public class Colisao {
 
     private final Snake snake;
     private final Rato rato;
+    private boolean colidiu = false;
 
     public Colisao(Snake snake, Rato comida) {
         this.snake = snake;
@@ -30,7 +31,10 @@ public class Colisao {
         boolean isBateuComParedeSuperior = snake.getSpriteCabeca().getBoundingRectangle().contains(snake.getSpriteCabeca().getX(), GameInfo.SCREAM_HEIGHT + 3);
 
         if (isBateuComParedeEsquerda || isBateuComParedeDireita || isBateuComParedeInferior || isBateuComParedeSuperior) {
-//            System.out.println("BATEU PAREDE");
+            System.out.println("BATEU PAREDE");
+            this.colidiu = true;
         }
     }
+
+    public boolean isColidiu(){return this.colidiu;}
 }

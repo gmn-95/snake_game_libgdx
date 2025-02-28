@@ -29,7 +29,7 @@ public class Snake {
     private float rotacao = 0;
     private int direcaoAtual = 0;
     private boolean isAdiciona = false;
-    private final float delay = 0.21f; // 200 milissegundos de delay
+    private final float delay = 0.10f; // 200 milissegundos de delay
     private float tempoPassado = 0;
 
     public Snake(SpriteBatch spriteBatch) {
@@ -83,7 +83,8 @@ public class Snake {
 
         defineDirecaoERotacao();
 
-        adicionaCorpoTeste();
+//        adicionaCorpoTeste();
+        if (isAdiciona) adicionaParteCorpo();
 
         moveNaDirecaoEscolhida();
 
@@ -100,7 +101,7 @@ public class Snake {
     }
 
 
-    protected void AdicionaParteCorpo(){
+    protected void adicionaParteCorpo(){
         ParteCorpo corpo = new ParteCorpo(x - (TAMANHO_CORPO * partesCorpo.getFirst().getX()), y, new Sprite(texturaCorpo));
         partesCorpo.add(corpo);
     }
@@ -111,7 +112,6 @@ public class Snake {
 
     protected void atualizaMovimentacaoDaCobra(int xAntesDeAtualizar, int yAntesDeAtualizar){
         if(isAdiciona){
-            isAdicionaParteCorpo();
             isAdiciona = false;
         }
 
@@ -144,6 +144,9 @@ public class Snake {
         }
     }
 
+    /**
+     * reseta imagem cabeça cobra
+     * */
     public void reset(){
         if (Gdx.graphics.getFrameId() % 15 == 0){// Ajusta a frequência de movimento das partes do corpo
             spriteCabeca.setTexture(new Texture(pathTexturaCabeca));
@@ -157,16 +160,16 @@ public class Snake {
         // Verifica se o delay foi alcançado
         if (tempoPassado >= delay) {
             // Atualiza a direção baseada nas teclas pressionadas, com o delay aplicado
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && direcaoAtual != Input.Keys.LEFT) {
+            if (isKeyPressed(Input.Keys.RIGHT, Input.Keys.D) && naoEhDirecaoAtual(Input.Keys.LEFT, Input.Keys.A)) {
                 direcao = Input.Keys.RIGHT;
                 rotacao = 90;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && direcaoAtual != Input.Keys.RIGHT) {
+            } else if (isKeyPressed(Input.Keys.LEFT, Input.Keys.A) && naoEhDirecaoAtual(Input.Keys.RIGHT, Input.Keys.D)) {
                 direcao = Input.Keys.LEFT;
                 rotacao = -90;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.UP) && direcaoAtual != Input.Keys.DOWN) {
+            } else if (isKeyPressed(Input.Keys.UP, Input.Keys.W) &&  naoEhDirecaoAtual(Input.Keys.DOWN, Input.Keys.S)) {
                 direcao = Input.Keys.UP;
                 rotacao = 180;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && direcaoAtual != Input.Keys.UP) {
+            } else if (isKeyPressed(Input.Keys.DOWN, Input.Keys.S) && naoEhDirecaoAtual(Input.Keys.UP, Input.Keys.W)) {
                 direcao = Input.Keys.DOWN;
                 rotacao = 0;
             }
@@ -174,6 +177,24 @@ public class Snake {
             // Reseta o tempo passado para aplicar o próximo delay
             tempoPassado = 0;
         }
+    }
+
+    protected boolean naoEhDirecaoAtual(int keyOption1, int keyOption2){
+        return this.direcaoAtual != keyOption1 || this.direcaoAtual != keyOption2;
+    }
+
+    protected boolean isKeyPressed(int keyOption1, int keyOption2){
+        if(Gdx.input.isKeyPressed(keyOption1)) {
+            this.direcao = keyOption1;
+            return true;
+        }
+
+        if(Gdx.input.isKeyPressed(keyOption2)){
+            this.direcao = keyOption2;
+            return true;
+        }
+
+        return false;
     }
 
     protected void moveNaDirecaoEscolhida() {
@@ -189,8 +210,8 @@ public class Snake {
         direcaoAtual = direcao;
     }
 
-
     public Sprite getSpriteCabeca() {
         return spriteCabeca;
     }
+
 }

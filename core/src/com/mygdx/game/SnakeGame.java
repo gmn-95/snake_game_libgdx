@@ -1,12 +1,11 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.entities.Colisao;
-import com.mygdx.game.entities.Rato;
-import com.mygdx.game.entities.Grama;
-import com.mygdx.game.entities.Snake;
+import com.mygdx.game.entities.*;
 
 public class SnakeGame extends ApplicationAdapter {
 
@@ -15,7 +14,8 @@ public class SnakeGame extends ApplicationAdapter {
 	private Snake snake;
 	private Rato comida;
 	private Colisao colisao;
-	
+	private GameOverScreen gameOverScreen;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -23,6 +23,7 @@ public class SnakeGame extends ApplicationAdapter {
 		snake = new Snake(batch);
 		comida = new Rato(batch);
 		colisao = new Colisao(snake, comida);
+		gameOverScreen = new GameOverScreen(batch);
 	}
 
 	@Override
@@ -34,10 +35,17 @@ public class SnakeGame extends ApplicationAdapter {
 		snake.desenhaCorpo();
 		snake.desenhaCabeca();
 		comida.desenhaComida();
-		snake.move();
-		colisao.checaColisaoComRato();
-		colisao.checaColisaoComParede();
 
+		if(colisao.isColidiu()){
+			this.gameOverScreen.gameOverScreen();
+			gameOverScreen.setIsGameOver(true);
+		} else {
+			snake.move();
+			colisao.checaColisaoComRato();
+			colisao.checaColisaoComParede();
+		}
+
+		restartGame();
 		batch.end();
 	}
 	
@@ -47,5 +55,16 @@ public class SnakeGame extends ApplicationAdapter {
 		grama.disope();
 		snake.disope();
 		comida.disope();
+		gameOverScreen.dispose();
 	}
+
+	private void restartGame(){
+		if(Gdx.input.isKeyPressed(Input.Keys.ENTER) && gameOverScreen.isGameOver()){
+			snake = new Snake(batch);
+			comida = new Rato(batch);
+			colisao = new Colisao(snake, comida);
+			gameOverScreen.setIsGameOver(false);
+		}
+	}
+
 }
