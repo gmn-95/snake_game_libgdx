@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.LinkedList;
 
+import static com.badlogic.gdx.Input.Keys.*;
+
 public class Snake {
 
     private int x = 70;
@@ -29,7 +31,7 @@ public class Snake {
     private float rotacao = 0;
     private int direcaoAtual = 0;
     private boolean isAdiciona = false;
-    private final float delay = 0.10f; // 200 milissegundos de delay
+    private final float delay; // 200 milissegundos de delay
     private float tempoPassado = 0;
 
     public Snake(SpriteBatch spriteBatch) {
@@ -39,6 +41,7 @@ public class Snake {
         texturaCorpo = new Texture(pathTexturaCorpo);
         spriteCabeca = new Sprite(texturaCabeca);
         spriteCorpo = new Sprite(texturaCorpo);
+        delay = 0.10f;
     }
 
     public void desenhaCorpo() {
@@ -59,7 +62,6 @@ public class Snake {
         }
     }
 
-
     public void disope() {
         texturaCabeca.dispose();
         texturaCorpo.dispose();
@@ -76,17 +78,13 @@ public class Snake {
         }
     }
 
-
     public void move() {
         int xAntesDeAtualizar = x;
         int yAntesDeAtualizar = y;
 
         defineDirecaoERotacao();
-
 //        adicionaCorpoTeste();
         if (isAdiciona) adicionaParteCorpo();
-
-        moveNaDirecaoEscolhida();
 
         if (direcao == 0) {
             ParteCorpo parteCorpo = partesCorpo.remove(0);
@@ -160,51 +158,47 @@ public class Snake {
         // Verifica se o delay foi alcançado
         if (tempoPassado >= delay) {
             // Atualiza a direção baseada nas teclas pressionadas, com o delay aplicado
-            if (isKeyPressed(Input.Keys.RIGHT, Input.Keys.D) && naoEhDirecaoAtual(Input.Keys.LEFT, Input.Keys.A)) {
-                direcao = Input.Keys.RIGHT;
+            if (isKeyPressed(RIGHT, D) && naoEhDirecaoAtual(LEFT, A)) {
                 rotacao = 90;
-            } else if (isKeyPressed(Input.Keys.LEFT, Input.Keys.A) && naoEhDirecaoAtual(Input.Keys.RIGHT, Input.Keys.D)) {
-                direcao = Input.Keys.LEFT;
+                setDirecao(RIGHT, D);
+            } else if (isKeyPressed(LEFT, A) && naoEhDirecaoAtual(RIGHT, D)) {
                 rotacao = -90;
-            } else if (isKeyPressed(Input.Keys.UP, Input.Keys.W) &&  naoEhDirecaoAtual(Input.Keys.DOWN, Input.Keys.S)) {
-                direcao = Input.Keys.UP;
+                setDirecao(LEFT, A);
+            } else if (isKeyPressed(UP, W) &&  naoEhDirecaoAtual(DOWN, S)) {
                 rotacao = 180;
-            } else if (isKeyPressed(Input.Keys.DOWN, Input.Keys.S) && naoEhDirecaoAtual(Input.Keys.UP, Input.Keys.W)) {
-                direcao = Input.Keys.DOWN;
+                setDirecao(UP, W);
+            } else if (isKeyPressed(DOWN, S) && naoEhDirecaoAtual(UP, W)) {
                 rotacao = 0;
+                setDirecao(DOWN, S);
             }
 
             // Reseta o tempo passado para aplicar o próximo delay
             tempoPassado = 0;
         }
+        moveNaDirecaoEscolhida();
+
     }
 
     protected boolean naoEhDirecaoAtual(int keyOption1, int keyOption2){
-        return this.direcaoAtual != keyOption1 || this.direcaoAtual != keyOption2;
+        return this.direcaoAtual != keyOption1 && this.direcaoAtual != keyOption2;
+    }
+
+    protected void setDirecao(int keyOption1, int keyOption2){
+        direcao = Gdx.input.isKeyPressed(keyOption1) ? keyOption1 : keyOption2;
     }
 
     protected boolean isKeyPressed(int keyOption1, int keyOption2){
-        if(Gdx.input.isKeyPressed(keyOption1)) {
-            this.direcao = keyOption1;
-            return true;
-        }
-
-        if(Gdx.input.isKeyPressed(keyOption2)){
-            this.direcao = keyOption2;
-            return true;
-        }
-
-        return false;
+        return Gdx.input.isKeyPressed(keyOption1) || Gdx.input.isKeyPressed(keyOption2);
     }
 
     protected void moveNaDirecaoEscolhida() {
-        if (direcao == Input.Keys.RIGHT && direcaoAtual != Input.Keys.LEFT) {
+        if (direcao == RIGHT || direcao == D) {
             x += VELOCIDADE;
-        } else if (direcao == Input.Keys.LEFT && direcaoAtual != Input.Keys.RIGHT) {
+        } else if (direcao == LEFT || direcao == A) {
             x -= VELOCIDADE;
-        } else if (direcao == Input.Keys.UP && direcaoAtual != Input.Keys.DOWN) {
+        } else if (direcao == UP || direcao == W) {
             y += VELOCIDADE;
-        } else if (direcao == Input.Keys.DOWN && direcaoAtual != Input.Keys.UP) {
+        } else if (direcao == DOWN || direcao == S) {
             y -= VELOCIDADE;
         }
         direcaoAtual = direcao;
