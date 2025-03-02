@@ -41,6 +41,7 @@ public class SnakeGame extends ApplicationAdapter {
 			gameOverScreen.setIsGameOver(true);
 		} else {
 			snake.move();
+			colisao.checaColisaoComCorpo();
 			colisao.checaColisaoComRato();
 			colisao.checaColisaoComParede();
 		}
