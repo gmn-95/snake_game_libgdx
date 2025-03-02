@@ -9,12 +9,18 @@ public class ParteCorpo {
     private int x;
     private int y;
     private final Sprite sprite;
+    private boolean isCabeca;
 
-    public ParteCorpo(int x, int y, Sprite sprite) {
+    public ParteCorpo(int x, int y, Sprite sprite, boolean isCabeca) {
         this.x = x;
         this.y = y;
         this.sprite = sprite;
         this.sprite.setPosition(x, y);
+        this.isCabeca = isCabeca;
+    }
+
+    public boolean isCabeca() {
+        return isCabeca;
     }
 
     public int getX() {
@@ -42,12 +48,12 @@ public class ParteCorpo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParteCorpo that = (ParteCorpo) o;
-        return getX() == that.getX() && getY() == that.getY() && Objects.equals(getSprite(), that.getSprite());
+        return getX() == that.getX() && getY() == that.getY() && isCabeca() == that.isCabeca() && Objects.equals(getSprite(), that.getSprite());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getX(), getY(), getSprite());
+        return Objects.hash(getX(), getY(), getSprite(), isCabeca());
     }
 
     @Override
@@ -55,6 +61,8 @@ public class ParteCorpo {
         return "ParteCorpo{" +
                 "x=" + x +
                 ", y=" + y +
+                ", sprite=" + sprite +
+                ", isCabeca=" + isCabeca +
                 '}';
     }
 }

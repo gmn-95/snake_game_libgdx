@@ -1,15 +1,21 @@
 package com.mygdx.game.entities;
 
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.info.GameInfo;
+
+import java.util.LinkedList;
 
 public class Colisao {
 
     private final Snake snake;
     private final Rato rato;
     private boolean colidiu = false;
+
+    /**
+     * às vezes a cobra pode encostar em seu próprio corpo, mas não significa fim de jogo.
+     * Então temos uma pequena tolerância
+     */
+    private final static int TAMANHO_TOLERANCIA_COLISAO = 20;
 
     public Colisao(Snake snake, Rato comida) {
         this.snake = snake;
@@ -39,39 +45,30 @@ public class Colisao {
     }
 
     public void checaColisaoComCorpo() {
-        // Ignora a verificação de colisão no início, quando a cobra ainda está na posição inicial
         if (snake.isPosicaoInicial()) return;
 
-        // Iterando pelas partes do corpo, começando do índice 6 (evitando a cabeça)
-        for (int i = 6; i < snake.getPartesCorpo().size(); i++) {
-            ParteCorpo parteCorpo = snake.getPartesCorpo().get(i); // Parte do corpo
+        LinkedList<ParteCorpo> parteCorpos = snake.getPartesCorpo();
 
-            // Obtendo o Sprite da cabeça e da parte do corpo
-            Sprite cabecaSprite = snake.getSpriteCabeca();
-            Sprite parteSprite = parteCorpo.getSprite();
+        ParteCorpo cabeca = parteCorpos.getFirst();
+        int headX = cabeca.getX();
+        int headY = cabeca.getY();
 
-            // Verificando as coordenadas e tamanhos dos retângulos
-            Rectangle cabecaRectangle = cabecaSprite.getBoundingRectangle();
-            Rectangle parteRectangle = parteSprite.getBoundingRectangle();
+        // Iterando pelas partes do corpo (evitando a cabeça) - Iniciando pela quarta parte.
+        for (int i = 4; i < parteCorpos.size(); i++) {
+            ParteCorpo parte = parteCorpos.get(i);
 
-            // Adicionando logs para depuração
-//            System.out.println("Cabeça: " + cabecaRectangle + " | Parte: " + parteRectangle);
+            int parteX = parte.getX();
+            int parteY = parte.getY();
 
-            // Verificando se os retângulos se sobrepõem (colidem)
-            if (cabecaRectangle.overlaps(parteRectangle)) {
-                // Aqui podemos adicionar uma verificação para garantir que a cabeça realmente passou por cima da parte
-                if (cabecaRectangle.x > parteRectangle.x && cabecaRectangle.y > parteRectangle.y) {
-                    System.out.println("Colisão detectada com parte do corpo " + i);
-                    break; // Colisão detectada, então interrompe a verificação
-                }
+            boolean colisaoX = Math.abs(headX - parteX) < TAMANHO_TOLERANCIA_COLISAO;
+            boolean colisaoY = Math.abs(headY - parteY) < TAMANHO_TOLERANCIA_COLISAO;
+
+            if (colisaoX && colisaoY) {
+                System.out.println("Colisão detectada com o corpo!");
+                this.colidiu = true;
             }
         }
     }
-
-
-
-
-
 
     public boolean isColidiu(){return this.colidiu;}
 }

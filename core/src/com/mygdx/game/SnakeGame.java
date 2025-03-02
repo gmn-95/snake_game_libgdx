@@ -33,7 +33,6 @@ public class SnakeGame extends ApplicationAdapter {
 
 		grama.init();
 		snake.desenhaCorpo();
-		snake.desenhaCabeca();
 		comida.desenhaComida();
 
 		if(colisao.isColidiu()){

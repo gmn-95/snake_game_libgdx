@@ -19,7 +19,7 @@ public class Snake {
     private static final String PATH_TEX_CORPO = "snakebody2.png";
     private static final int TAMANHO_CORPO = 20; // Tamanho de cada parte do corpo
     private static final int VELOCIDADE = 4; //
-    private static final int TAMANHO_CORPO_INICIAL = 30; //
+    private static final int TAMANHO_CORPO_INICIAL = 3; //
     private static final int VELOCIDADE_ATUALIZACAO_RENDER_CORPO = 4;
 
     private final Texture texturaCabeca;
@@ -33,7 +33,9 @@ public class Snake {
     private float rotacao = 0;
     private int direcaoAtual = 0;
     private boolean isAdiciona = false;
-    private final float delay = 0.10F; // 200 milissegundos de delay
+
+    //pequeno inputlag
+    private final float delay = 0.08F; // 200 milissegundos de delay
     private float tempoPassado = 0;
 
     private boolean posicaoInicial;
@@ -49,19 +51,28 @@ public class Snake {
     }
 
     public void desenhaCorpo() {
-        if(partesCorpo.isEmpty()){
+        if (partesCorpo.isEmpty()) {
             inicializaCorpo();
         }
 
-        for (ParteCorpo parteCorpo : partesCorpo) {
+        // Desenha o restante do corpo
+        for (int i = 1; i < partesCorpo.size(); i++) {  // Começa do índice 1, pois a cabeça já foi desenhada
+            ParteCorpo parteCorpo = partesCorpo.get(i);
             spriteCorpo.setPosition(parteCorpo.getX(), parteCorpo.getY());
             spriteCorpo.draw(spriteBatch);
         }
+
+        desenhaCabeca();
     }
 
-    protected void inicializaCorpo(){
+    protected void inicializaCorpo() {
+        // Inicializa a cabeça na primeira posição
+        ParteCorpo cabeca = new ParteCorpo(x, y, spriteCabeca, true);
+        partesCorpo.addFirst(cabeca);
+
+        // Inicializa o restante do corpo
         for (int i = 1; i <= TAMANHO_CORPO_INICIAL; i++) {
-            ParteCorpo corpo = new ParteCorpo(x - (TAMANHO_CORPO * i), y, spriteCorpo); // Adiciona partes do corpo com um espaço fixo entre elas
+            ParteCorpo corpo = new ParteCorpo(x - (TAMANHO_CORPO * i), y, spriteCorpo, false);
             partesCorpo.add(corpo);
         }
     }
@@ -72,12 +83,13 @@ public class Snake {
     }
 
     public void desenhaCabeca() {
+        spriteCabeca.setPosition(x, y);
         spriteCabeca.draw(spriteBatch);
     }
 
     public void adicionaCorpoTeste(){
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            ParteCorpo corpo = new ParteCorpo(x - (TAMANHO_CORPO * partesCorpo.getFirst().getX()), y, new Sprite(texturaCorpo));
+            ParteCorpo corpo = new ParteCorpo(x - (TAMANHO_CORPO * partesCorpo.getFirst().getX()), y, new Sprite(texturaCorpo), false);
             partesCorpo.add(corpo);
         }
     }
@@ -106,18 +118,37 @@ public class Snake {
     }
 
     private void reposicionarParteCorpo(int xAnterior, int yAnterior) {
-        ParteCorpo parteCorpo = partesCorpo.removeFirst();
-        parteCorpo.setX(xAnterior);
-        parteCorpo.setY(yAnterior);
-        partesCorpo.add(parteCorpo);
+        if (partesCorpo.isEmpty()) return; // Evita erro caso não haja corpo
 
-        // Atualiza a posição do sprite da parte do corpo
-        parteCorpo.getSprite().setPosition(parteCorpo.getX(), parteCorpo.getY());
+        int xAtual = xAnterior;
+        int yAtual = yAnterior;
+
+        // Percorre todas as partes do corpo e faz o "efeito de arrastar"
+        for (ParteCorpo parte : partesCorpo) {
+            int tempX = parte.getX();
+            int tempY = parte.getY();
+
+            parte.setX(xAtual);
+            parte.setY(yAtual);
+            parte.getSprite().setPosition(xAtual, yAtual);
+
+            xAtual = tempX;
+            yAtual = tempY;
+        }
     }
 
+    protected void adicionaParteCorpo() {
+        // Pega a última parte do corpo
+        ParteCorpo ultimaParte = partesCorpo.getLast();
 
-    protected void adicionaParteCorpo(){
-        ParteCorpo corpo = new ParteCorpo(x - (TAMANHO_CORPO * partesCorpo.getFirst().getX()), y, new Sprite(texturaCorpo));
+        // Calcula a nova posição da parte do corpo com base na última parte
+        int novaPosicaoX = ultimaParte.getX();
+        int novaPosicaoY = ultimaParte.getY();
+
+        // Cria uma nova parte do corpo na posição calculada
+        ParteCorpo corpo = new ParteCorpo(novaPosicaoX, novaPosicaoY, new Sprite(texturaCorpo), false);
+
+        // Adiciona a nova parte do corpo à lista
         partesCorpo.add(corpo);
     }
 
@@ -128,10 +159,8 @@ public class Snake {
     protected void atualizaMovimentacaoDaCobra(int xAnterior, int yAnterior){
           if (Gdx.graphics.getFrameId() % VELOCIDADE_ATUALIZACAO_RENDER_CORPO == 0 && !partesCorpo.isEmpty()){// Ajusta a frequência de movimento das partes do corpo
               reposicionarParteCorpo(xAnterior, yAnterior);
-              //                    parteCorpo.getSprite().setRotation(rotacao);
           }
     }
-
 
     public void animacaoComer(Rato comida){
 
@@ -229,19 +258,7 @@ public class Snake {
         return partesCorpo;
     }
 
-    public Sprite getSpriteCorpo() {
-        return spriteCorpo;
-    }
-
     public boolean isPosicaoInicial() {
         return posicaoInicial;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 }
