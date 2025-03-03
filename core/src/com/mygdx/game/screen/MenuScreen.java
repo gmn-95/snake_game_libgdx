@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.SnakeGame;
-import com.mygdx.game.entities.Grama;
+import com.mygdx.game.entities.Snake;
 import com.mygdx.game.info.GameInfo;
 
 public class MenuScreen implements Screen {
@@ -22,14 +22,20 @@ public class MenuScreen implements Screen {
     private final Texture exitButtonActive;
     private final Texture exitButtonInactive;
 
-    private static final String pathGameOver = "game_over2.png";
     private final Stage stage;
     private final ImageButton playButton;
     private final ImageButton exitButton;
 
+    private final SnakeGame game;
+    private final Snake snake;
+    private final SpriteBatch spriteBatch;
+
     private boolean btInativo = true;
 
-    public MenuScreen(SnakeGame game){
+    public MenuScreen(SnakeGame game, Snake snake){
+        this.game = game;
+        this.snake = snake;
+        this.spriteBatch = snake.getSpriteBatch();
 
         playButtonActive = new Texture("play_button_active_2.png");
         playButtonInactive = new Texture("play_button_inactive_2.png");
@@ -75,9 +81,12 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        spriteBatch.begin();
+        snake.desenhaCorpo();//renderizando corpo apenas para nao bugar na tela de menu
         setImagemBotao(playButton, playButtonActive, playButtonInactive);
         setImagemBotao(exitButton, exitButtonActive, exitButtonInactive);
 
+        spriteBatch.end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); // Limita o deltaTime
         stage.draw();
     }

@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
 
         // se game over, mostra menu
         if (colisao.isColidiu()) {
-            game.setGameOver();
+            game.setGameOver(snake);
         } else {
             snake.move();
             colisao.checaColisaoComCorpo();
@@ -76,6 +76,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        snake.disope();
+        comida.disope();
+        grama.disope();
+        comida.disope();
     }
 }

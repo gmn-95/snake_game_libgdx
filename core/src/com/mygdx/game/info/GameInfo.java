@@ -7,5 +7,4 @@ public class GameInfo {
     public static final int FPS = 60;
     public static final String TITULO = "SNAKE GAME";
 
-
 }

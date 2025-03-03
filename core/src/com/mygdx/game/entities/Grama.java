@@ -31,6 +31,4 @@ public class Grama {
     public void disope(){
         texture.dispose();
     }
-
-
 }

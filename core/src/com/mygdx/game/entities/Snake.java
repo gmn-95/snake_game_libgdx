@@ -27,7 +27,7 @@ public class Snake {
     private final LinkedList<ParteCorpo> partesCorpo;
     private final Sprite spriteCabeca;
     private final Sprite spriteCorpo;
-    private final SpriteBatch spriteBatch;
+    private SpriteBatch spriteBatch;
 
     private int direcao = 0;
     private float rotacao = 0;
@@ -260,5 +260,9 @@ public class Snake {
 
     public boolean isPosicaoInicial() {
         return posicaoInicial;
+    }
+
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
     }
 }
