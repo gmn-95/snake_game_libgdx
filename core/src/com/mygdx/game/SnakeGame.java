@@ -36,7 +36,4 @@ public class SnakeGame extends Game {
 		Gdx.app.exit();
 	}
 
-	public GameScreen getGameScreen() {
-		return gameScreen;
-	}
 }

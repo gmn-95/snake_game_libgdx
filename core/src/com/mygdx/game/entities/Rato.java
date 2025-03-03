@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Rato {
@@ -28,20 +29,40 @@ public class Rato {
         spriteRato.draw(spriteBatch);
     }
 
-    public void novaPosicao(){
+    public void novaPosicao(LinkedList<ParteCorpo> parteCorposSnake) {
         Random random = new Random();
-        int x = 0;
-        int y = 0;
+        int x, y;
         int raio = 8;
+        int larguraTela = Gdx.graphics.getWidth();
+        int alturaTela = Gdx.graphics.getHeight();
 
-        do{
-            x = Math.abs(random.nextInt(Gdx.graphics.getWidth() - (raio * 2)));
-            y = Math.abs(random.nextInt(Gdx.graphics.getHeight() - (raio * 2)));
-        } while ((x <= 10 || x >= Gdx.graphics.getWidth() - 10) || (y <= 10 || y >= Gdx.graphics.getHeight() - 10));
+        boolean posicaoValida;
+
+        do {
+            x = random.nextInt(larguraTela - (raio * 2)) + raio;
+            y = random.nextInt(alturaTela - (raio * 2)) + raio;
+
+            posicaoValida = (x > 10 && x < larguraTela - 10) && (y > 10 && y < alturaTela - 10);
+
+            for (ParteCorpo parteCorpo : parteCorposSnake) {
+                int parteCorpoX = parteCorpo.getX();
+                int parteCorpoY = parteCorpo.getY();
+
+                boolean emCimaDaSnakeX = Math.abs(parteCorpoX - x) < 15;
+                boolean emCimaDaSnakeY = Math.abs(parteCorpoY - y) < 15;
+
+                if (emCimaDaSnakeX && emCimaDaSnakeY) {
+                    posicaoValida = false;
+                    break;
+                }
+            }
+
+        } while (!posicaoValida);
 
         spriteRato.setPosition(x, y);
         isPosicaoInicial = false;
     }
+
 
     public void disope(){
         texture.dispose();

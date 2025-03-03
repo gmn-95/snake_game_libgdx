@@ -91,6 +91,9 @@ public class MenuScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Troca a imagem quando passa o mouse por cima
+     * */
     protected void setImagemBotao(final ImageButton botao, Texture botaoAtivo, Texture botaoInativo){
         //posições do mouse x e y
         int inputMouseX = Gdx.input.getX();

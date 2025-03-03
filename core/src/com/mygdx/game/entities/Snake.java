@@ -100,7 +100,7 @@ public class Snake {
 
         defineDirecaoERotacao();
         moveNaDirecaoEscolhida();
-        adicionaCorpoTeste();
+//        adicionaCorpoTeste();
         if (isAdiciona){
             adicionaParteCorpo();
             isAdiciona = false;

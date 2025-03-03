@@ -25,8 +25,22 @@ public class Colisao {
     public void checaColisaoComRato(){
         snake.animacaoComer(rato);
 
-        if(snake.getSpriteCabeca().getBoundingRectangle().overlaps(rato.getSpriteRato().getBoundingRectangle())){
-            rato.novaPosicao();
+        //codigo que também funciona, mas qualquer contato mínimo já entende q a snake comeu o rato
+//        if(snake.getSpriteCabeca().getBoundingRectangle().overlaps(rato.getSpriteRato().getBoundingRectangle())){
+        ParteCorpo cabeca = snake.getPartesCorpo().getFirst();
+        int headX = cabeca.getX();
+        int headY = cabeca.getY();
+
+        float ratoX = rato.getSpriteRato().getX();
+        float ratoY = rato.getSpriteRato().getY();
+
+        //nem sempre a cobra passa 100% por cima do rato
+        //nesse caso, temos uma tolerancia para ela nao 'comer'
+        boolean colisaoX = Math.abs(headX - ratoX) < TAMANHO_TOLERANCIA_COLISAO;
+        boolean colisaoY = Math.abs(headY - ratoY) < TAMANHO_TOLERANCIA_COLISAO;
+
+        if(colisaoX && colisaoY){
+            rato.novaPosicao(snake.getPartesCorpo());
             snake.isAdicionaParteCorpo();
         }
         snake.resetarTexturaCabeca();
