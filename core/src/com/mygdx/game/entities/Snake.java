@@ -19,7 +19,7 @@ public class Snake {
     private static final String PATH_TEX_CORPO = "snakebody2.png";
     private static final int TAMANHO_CORPO = 20; // Tamanho de cada parte do corpo
     private static final int VELOCIDADE = 4; //
-    private static final int TAMANHO_CORPO_INICIAL = 3; //
+    private static final int TAMANHO_CORPO_INICIAL = 1; //quantidade de partes iniciais
     private static final int VELOCIDADE_ATUALIZACAO_RENDER_CORPO = 4;
 
     private final Texture texturaCabeca;

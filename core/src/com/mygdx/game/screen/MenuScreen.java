@@ -2,60 +2,70 @@ package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.SnakeGame;
+import com.mygdx.game.entities.Grama;
+import com.mygdx.game.info.GameInfo;
 
 public class MenuScreen implements Screen {
 
+    private final Texture playButtonActive;
+    private final Texture playButtonInactive;
+    private final Texture exitButtonActive;
+    private final Texture exitButtonInactive;
+
     private static final String pathGameOver = "game_over2.png";
-    private Texture gameOverTexture;
-    private SnakeGame game;
-    private Stage stage;
-    private SpriteBatch batch;
-    private BitmapFont font;
-    private Skin skin;
+    private final Stage stage;
+    private final ImageButton playButton;
+    private final ImageButton exitButton;
 
-    private static final int SCREEN_WIDTH = 500;
-    private static final int SCREEN_HEIGHT = 500;
-
+    private boolean btInativo = true;
 
     public MenuScreen(SnakeGame game){
-        this.game = game;
+
+        playButtonActive = new Texture("play_button_active_2.png");
+        playButtonInactive = new Texture("play_button_inactive_2.png");
+        exitButtonActive = new Texture("exit_button_active_2.png");
+        exitButtonInactive = new Texture("exit_button_inactive_2.png");
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        font.getData().setScale(2); // Deixa a fonte maior para ser visível
+        float x = (float) (GameInfo.SCREAM_WIDTH - 230) / 2;
+        float yPlay = (float) (GameInfo.SCREAM_HEIGHT - 10) / 2;
+        float yExit = (float) (GameInfo.SCREAM_HEIGHT - 200) / 2;
 
-        // Criando um estilo simples para o botão
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = font;
-        buttonStyle.fontColor = Color.WHITE;
+        // Criação de ImageButton com a textura ativa
+        playButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(playButtonInactive)));
+        exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(exitButtonInactive)));
 
-        TextButton restartButton = new TextButton("Reiniciar", buttonStyle);
-        restartButton.setSize(150, 50);
-        restartButton.setPosition((SCREEN_WIDTH - restartButton.getWidth()) / 2f, 150); // Centralizado
+        playButton.setPosition(x, yPlay);
+        exitButton.setPosition(x, yExit);
 
-        restartButton.addListener(new ClickListener() {
+        playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.restartGame();
             }
         });
 
-        stage.addActor(restartButton);
+        exitButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.exitGame();
+            }
+        });
+
+        stage.addActor(playButton);
+        stage.addActor(exitButton);
     }
 
     @Override
@@ -65,18 +75,31 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        setImagemBotao(playButton, playButtonActive, playButtonInactive);
+        setImagemBotao(exitButton, exitButtonActive, exitButtonInactive);
 
-        batch.begin();
-
-        // Texto para testar se algo aparece na tela
-        font.setColor(Color.WHITE);
-        font.draw(batch, "GAME OVER", SCREEN_WIDTH / 2f - 60, SCREEN_HEIGHT / 2f + 50);
-
-        batch.end();
-
-        stage.act(delta);
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); // Limita o deltaTime
         stage.draw();
+    }
+
+    protected void setImagemBotao(final ImageButton botao, Texture botaoAtivo, Texture botaoInativo){
+        //posições do mouse x e y
+        int inputMouseX = Gdx.input.getX();
+        int inputMouseY = Gdx.input.getY();
+
+
+        if (botao.getX() <= inputMouseX && inputMouseX <= botao.getX() + botao.getWidth()
+                && GameInfo.SCREAM_HEIGHT - inputMouseY <= botao.getY() + botao.getHeight()
+                && GameInfo.SCREAM_HEIGHT - inputMouseY >= botao.getY()
+        ){
+            if(btInativo){
+                btInativo = false;
+                botao.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(botaoAtivo));
+            }
+        } else {
+            btInativo = true;
+            botao.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(botaoInativo));
+        }
     }
 
     @Override
@@ -101,8 +124,9 @@ public class MenuScreen implements Screen {
 
     public void dispose(){
         stage.dispose();
-        batch.dispose();
-        font.dispose();
-        skin.dispose();
+        playButtonActive.dispose();
+        playButtonInactive.dispose();
+        exitButtonActive.dispose();
+        exitButtonInactive.dispose();
     }
 }

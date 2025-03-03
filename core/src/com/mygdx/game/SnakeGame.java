@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.mygdx.game.screen.GameScreen;
 import com.mygdx.game.screen.MenuScreen;
 
@@ -26,6 +27,10 @@ public class SnakeGame extends Game {
 	public void restartGame() {
 		gameOver = false;
 		setScreen(new GameScreen(this));
+	}
+
+	public void exitGame(){
+		Gdx.app.exit();
 	}
 
 }
