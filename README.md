@@ -8,7 +8,7 @@ link da documentação: https://libgdx.com/
 Não implementei todas as funcionalidades, pois a ideia era mais trabalhar pela primeira vez com a biblioteca e ter uma noção de como ela funciona. No geral, gostei bastante
 
 
-# [--> Vídeo demonstração](https://youtube.com/shorts/sWJhlpY4uWw?feature=share)
+# [--> Vídeo demonstração](https://www.linkedin.com/posts/gustavo-macedo-360_java-snakeabrgame-libgdx-activity-7302489148228014080-dEud?utm_source=share&utm_medium=member_desktop&rcm=ACoAADDb-tIB8c-S5tH3zX7qa35OXXuXKbmKsEI)
 
 ![image](https://github.com/user-attachments/assets/20a6c417-bce1-4743-b105-b0a8658b327b)
 
