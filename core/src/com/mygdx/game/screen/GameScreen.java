@@ -4,10 +4,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.SnakeGame;
-import com.mygdx.game.entities.Colisao;
-import com.mygdx.game.entities.Grama;
-import com.mygdx.game.entities.Rato;
-import com.mygdx.game.entities.Snake;
+import com.mygdx.game.background.Grama;
+import com.mygdx.game.colisao.*;
+import com.mygdx.game.food.Comida;
+import com.mygdx.game.food.Maca;
+import com.mygdx.game.food.Rato;
+import com.mygdx.game.snake.Snake;
 
 public class GameScreen implements Screen {
 
@@ -15,7 +17,7 @@ public class GameScreen implements Screen {
     private final SpriteBatch batch;
     private final Grama grama;
     private final Snake snake;
-    private final Rato comida;
+    private final Comida comida;
     private final Colisao colisao;
 
     public GameScreen(SnakeGame game){
@@ -23,7 +25,9 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         grama = new Grama(batch);
         snake = new Snake(batch);
+
         comida = new Rato(batch);
+//        comida = new Maca(batch);
         colisao = new Colisao(snake, comida);
     }
 
@@ -47,7 +51,7 @@ public class GameScreen implements Screen {
         } else {
             snake.move();
             colisao.checaColisaoComCorpo();
-            colisao.checaColisaoComRato();
+            colisao.checaColisaoComComida();
             colisao.checaColisaoComParede();
         }
 

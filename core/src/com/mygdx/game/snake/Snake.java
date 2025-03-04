@@ -1,10 +1,11 @@
-package com.mygdx.game.entities;
+package com.mygdx.game.snake;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.food.Comida;
 
 import java.util.LinkedList;
 
@@ -162,12 +163,12 @@ public class Snake {
           }
     }
 
-    public void animacaoComer(Rato comida){
+    public void animacaoComer(Comida comida){
 
         //Calcula a distancia da cobra e a comida
         double distancia = Math.hypot(
-                comida.getSpriteRato().getX() - spriteCabeca.getX(),
-                comida.getSpriteRato().getY() - spriteCabeca.getY()
+                comida.getSprite().getX() - spriteCabeca.getX(),
+                comida.getSprite().getY() - spriteCabeca.getY()
         );
 
         if (distancia <= 50.0) {

@@ -1,32 +1,34 @@
-package com.mygdx.game.entities;
+package com.mygdx.game.food;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.snake.ParteCorpo;
 
 import java.util.LinkedList;
 import java.util.Random;
 
-public class Rato {
+public abstract class Comida {
 
     private final SpriteBatch spriteBatch;
-    private static final String pathTexturaRato = "rat.png";
     private final Texture texture;
-    private final Sprite spriteRato;
+    private final Sprite sprite;
     private boolean isPosicaoInicial = true;
+    private final String pathTextura;
 
-    public Rato(SpriteBatch spriteBatch) {
+    protected Comida(SpriteBatch spriteBatch, String pathTextura) {
         this.spriteBatch = spriteBatch;
-        this.texture = new Texture(pathTexturaRato);
-        this.spriteRato = new Sprite(texture);
+        this.texture = new Texture(pathTextura);
+        this.sprite = new Sprite(texture);
+        this.pathTextura = pathTextura;
     }
 
     public void desenhaComida(){
         if(isPosicaoInicial){
-            spriteRato.setPosition(50, 50);
+            sprite.setPosition(50, 50);
         }
-        spriteRato.draw(spriteBatch);
+        sprite.draw(spriteBatch);
     }
 
     public void novaPosicao(LinkedList<ParteCorpo> parteCorposSnake) {
@@ -59,16 +61,17 @@ public class Rato {
 
         } while (!posicaoValida);
 
-        spriteRato.setPosition(x, y);
+        sprite.setPosition(x, y);
         isPosicaoInicial = false;
     }
-
 
     public void disope(){
         texture.dispose();
     }
 
-    public Sprite getSpriteRato() {
-        return spriteRato;
+    public Sprite getSprite() {
+        return this.sprite;
     }
+
+
 }

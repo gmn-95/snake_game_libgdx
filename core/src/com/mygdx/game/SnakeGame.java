@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.mygdx.game.entities.Snake;
+import com.mygdx.game.snake.Snake;
 import com.mygdx.game.screen.GameScreen;
 import com.mygdx.game.screen.MenuScreen;
 

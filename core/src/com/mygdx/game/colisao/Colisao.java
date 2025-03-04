@@ -1,14 +1,17 @@
-package com.mygdx.game.entities;
+package com.mygdx.game.colisao;
 
 
+import com.mygdx.game.food.Comida;
 import com.mygdx.game.info.GameInfo;
+import com.mygdx.game.snake.ParteCorpo;
+import com.mygdx.game.snake.Snake;
 
 import java.util.LinkedList;
 
 public class Colisao {
 
     private final Snake snake;
-    private final Rato rato;
+    private final Comida comida;
     private boolean colidiu = false;
 
     /**
@@ -17,13 +20,13 @@ public class Colisao {
      */
     private final static int TAMANHO_TOLERANCIA_COLISAO = 20;
 
-    public Colisao(Snake snake, Rato comida) {
+    public Colisao(Snake snake, Comida comida) {
         this.snake = snake;
-        this.rato = comida;
+        this.comida = comida;
     }
 
-    public void checaColisaoComRato(){
-        snake.animacaoComer(rato);
+    public void checaColisaoComComida(){
+        snake.animacaoComer(comida);
 
         //codigo que também funciona, mas qualquer contato mínimo já entende q a snake comeu o rato
 //        if(snake.getSpriteCabeca().getBoundingRectangle().overlaps(rato.getSpriteRato().getBoundingRectangle())){
@@ -31,16 +34,16 @@ public class Colisao {
         int headX = cabeca.getX();
         int headY = cabeca.getY();
 
-        float ratoX = rato.getSpriteRato().getX();
-        float ratoY = rato.getSpriteRato().getY();
+        float comidaX = comida.getSprite().getX();
+        float comidaY = comida.getSprite().getY();
 
-        //nem sempre a cobra passa 100% por cima do rato
+        //nem sempre a cobra passa 100% por cima do comida
         //nesse caso, temos uma tolerancia para ela nao 'comer'
-        boolean colisaoX = Math.abs(headX - ratoX) < TAMANHO_TOLERANCIA_COLISAO;
-        boolean colisaoY = Math.abs(headY - ratoY) < TAMANHO_TOLERANCIA_COLISAO;
+        boolean colisaoX = Math.abs(headX - comidaX) < TAMANHO_TOLERANCIA_COLISAO;
+        boolean colisaoY = Math.abs(headY - comidaY) < TAMANHO_TOLERANCIA_COLISAO;
 
         if(colisaoX && colisaoY){
-            rato.novaPosicao(snake.getPartesCorpo());
+            comida.novaPosicao(snake.getPartesCorpo());
             snake.isAdicionaParteCorpo();
         }
         snake.resetarTexturaCabeca();
