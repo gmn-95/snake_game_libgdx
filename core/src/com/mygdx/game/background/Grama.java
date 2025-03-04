@@ -2,7 +2,7 @@ package com.mygdx.game.background;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.info.GameInfo;
+import com.mygdx.game.utils.GameInfo;
 
 public class Grama {
 

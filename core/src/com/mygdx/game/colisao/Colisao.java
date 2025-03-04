@@ -2,7 +2,7 @@ package com.mygdx.game.colisao;
 
 
 import com.mygdx.game.food.Comida;
-import com.mygdx.game.info.GameInfo;
+import com.mygdx.game.utils.GameInfo;
 import com.mygdx.game.snake.ParteCorpo;
 import com.mygdx.game.snake.Snake;
 

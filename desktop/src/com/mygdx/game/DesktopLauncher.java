@@ -2,8 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.game.SnakeGame;
-import com.mygdx.game.info.GameInfo;
+import com.mygdx.game.utils.GameInfo;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -12,6 +11,8 @@ public class DesktopLauncher {
 		config.setForegroundFPS(GameInfo.FPS);
 		config.setTitle(GameInfo.TITULO);
 		config.setWindowedMode(GameInfo.SCREAM_WIDTH, GameInfo.SCREAM_HEIGHT);
+		config.setResizable(false);
+		config.setMaximized(false);
 		new Lwjgl3Application(new SnakeGame(), config);
 	}
 }

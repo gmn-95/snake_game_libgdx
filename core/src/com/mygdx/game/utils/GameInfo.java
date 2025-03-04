@@ -1,4 +1,4 @@
-package com.mygdx.game.info;
+package com.mygdx.game.utils;
 
 public class GameInfo {
 

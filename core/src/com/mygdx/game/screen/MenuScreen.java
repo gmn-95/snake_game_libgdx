@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.SnakeGame;
 import com.mygdx.game.snake.Snake;
-import com.mygdx.game.info.GameInfo;
+import com.mygdx.game.utils.GameInfo;
 
 public class MenuScreen implements Screen {
 
