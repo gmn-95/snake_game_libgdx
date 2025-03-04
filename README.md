@@ -1,5 +1,11 @@
 # snake_game_libgdx
-Snake game com libgdx
+Snake game com libgdx.
+
+Eu já havia feito esse game com 'java puro', mas agora resolvi fazer usando o libgdx. A libGDX é uma estrutura de desenvolvimento de jogos Java multiplataforma baseada em OpenGL (ES) que funciona em Windows, Linux, macOS, Android, seu navegador e iOS.
+
+link da documentação: https://libgdx.com/
+
+Não implementei todas as funcionalidades, pois a ideia era mais trabalhar pela primeira vez com a biblioteca e ter uma noção de como ela funciona. No geral, gostei bastante
 
 
 # [Vídeo demonstração](https://youtube.com/shorts/sWJhlpY4uWw?feature=share)
